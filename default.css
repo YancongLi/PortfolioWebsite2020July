@@ -423,15 +423,5 @@ h6 {
 
 /* iPhone X */
 @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-  label, input, ul, textarea::placeholder {
-    font-size: xx-large;
-  }
-
-  #preview p {
-    font-size: 2.5rem;
-  }
-
-  .s1 {
-    overflow: visible;
-  }
+  
 }
