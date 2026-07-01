@@ -1,37 +1,22 @@
-let theme = localStorage.getItem("theme");
+// Theme: follow the OS by default; a manual toggle wins and is remembered.
+const root = document.documentElement;
 
-if (theme == null) {
-  setTheme("blue");
-} else {
-  setTheme(theme);
+const stored = localStorage.getItem("theme");
+if (stored === "light" || stored === "dark") {
+  root.dataset.theme = stored;
 }
 
-let themeDots = document.getElementsByClassName("theme-dot");
-
-for (let i = 0; themeDots.length > i; i++) {
-  themeDots[i].addEventListener("click", function () {
-    let mode = this.dataset.mode;
-    console.log("Option clicked:", mode);
-    setTheme(mode);
-  });
+function currentTheme() {
+  if (root.dataset.theme) return root.dataset.theme;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
-function setTheme(mode) {
-  if (mode == "light") {
-    document.getElementById("theme-style").href = "default.css";
-  }
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  root.dataset.theme = next;
+  localStorage.setItem("theme", next);
+});
 
-  if (mode == "blue") {
-    document.getElementById("theme-style").href = "blue.css";
-  }
-
-  if (mode == "green") {
-    document.getElementById("theme-style").href = "green.css";
-  }
-
-  if (mode == "purple") {
-    document.getElementById("theme-style").href = "purple.css";
-  }
-
-  localStorage.setItem("theme", mode);
-}
+document.getElementById("year").textContent = new Date().getFullYear();

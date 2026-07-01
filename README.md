@@ -1,8 +1,25 @@
-# Portfolio Website 2020 July
- Create a new version of my personal website and deplyed it in AWS S3
+# peterli.dev
 
-- Website URL: https://peterli-personal.s3-us-west-1.amazonaws.com/index.html
+Personal portfolio website. Plain HTML/CSS/JS — no build step — hosted on AWS S3.
 
-# Todo:
-- Consider adding backend functionalities
+- Live: https://peterli.dev
 
+## Structure
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | The whole site (single page) |
+| `style.css` | Styles, light/dark themes via CSS custom properties |
+| `script.js` | Theme toggle (follows OS preference, manual choice persisted) |
+| `resume.pdf` | Current résumé (stable filename so links never break) |
+| `images/profile.jpg` | Optimized profile photo |
+
+## Deploy
+
+```sh
+aws s3 sync . s3://YOUR-BUCKET-NAME \
+  --exclude ".git/*" --exclude "bucket-policy.txt" --exclude "README.md" \
+  --delete
+```
+
+`bucket-policy.txt` is the public-read bucket policy for reference.
