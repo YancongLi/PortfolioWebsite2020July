@@ -22,9 +22,13 @@ function syncToggleState() {
 }
 
 syncToggleState();
-window
-  .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", syncToggleState);
+
+const schemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+if (typeof schemeQuery.addEventListener === "function") {
+  schemeQuery.addEventListener("change", syncToggleState);
+} else if (typeof schemeQuery.addListener === "function") {
+  schemeQuery.addListener(syncToggleState);
+}
 
 toggle.addEventListener("click", () => {
   const next = currentTheme() === "dark" ? "light" : "dark";
