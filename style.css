@@ -12,6 +12,7 @@
   --terminal-bg: #0f172a;
   --terminal-text: #d7e2ec;
   --shadow: 0 10px 30px -12px rgba(15, 23, 42, 0.18);
+  --glow-2: rgba(139, 92, 246, 0.1);
 
   color-scheme: light;
 }
@@ -28,6 +29,7 @@
   --terminal-bg: #0a0f1c;
   --terminal-text: #cfdae6;
   --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.55);
+  --glow-2: rgba(167, 139, 250, 0.13);
 
   color-scheme: dark;
 }
@@ -45,6 +47,7 @@
     --terminal-bg: #0a0f1c;
     --terminal-text: #cfdae6;
     --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.55);
+    --glow-2: rgba(167, 139, 250, 0.13);
 
     color-scheme: dark;
   }
@@ -529,5 +532,162 @@ a {
   .terminal-body {
     flex-direction: column;
     text-align: left;
+  }
+}
+
+/* ---------- Motion ---------- */
+
+body {
+  overflow-x: hidden;
+}
+
+/* Ambient drifting glow behind the hero */
+.hero {
+  position: relative;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -25% -12%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(620px 340px at 18% 28%, var(--accent-soft), transparent 70%),
+    radial-gradient(540px 320px at 82% 72%, var(--glow-2), transparent 70%);
+  filter: blur(36px);
+  animation: drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  to {
+    transform: translate3d(4%, -4%, 0) scale(1.08);
+  }
+}
+
+/* Staggered hero entrance */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.hero-text > * {
+  animation: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+}
+
+.hero-text > :nth-child(1) { animation-delay: 0.05s; }
+.hero-text > :nth-child(2) { animation-delay: 0.14s; }
+.hero-text > :nth-child(3) { animation-delay: 0.23s; }
+.hero-text > :nth-child(4) { animation-delay: 0.32s; }
+.hero-text > :nth-child(5) { animation-delay: 0.41s; }
+
+.hero-card {
+  animation: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.3, 1) 0.4s backwards;
+}
+
+/* Scroll reveal (elements get .reveal from script.js; no-JS users see everything) */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.about-grid p:nth-child(2).reveal,
+.skill-group:nth-child(2).reveal {
+  transition-delay: 0.12s;
+}
+
+/* Terminal typing cursor */
+.t-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Circular theme reveal (View Transitions API) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Micro-interactions */
+.brand-dot {
+  animation: radiate 3s ease-out infinite;
+}
+
+@keyframes radiate {
+  from {
+    box-shadow: 0 0 0 0 var(--accent-soft);
+  }
+  60%,
+  to {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+.nav-links a {
+  position: relative;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+.chips li {
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.chips li:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }
