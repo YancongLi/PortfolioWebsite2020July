@@ -44,7 +44,6 @@
         <div class="nav-links">
           <a href="#experience">Experience</a>
           <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
           <a href="#contact">Contact</a>
           <button id="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">
             <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -136,19 +135,36 @@ education: BSc CS, UBC</code></pre>
             </div>
             <ul>
               <li>
-                Led architecture, implementation, and production launch of the
-                <strong>OTC Benefits card payment method</strong> across Amazon
-                Retail, Fresh, and FBA — 1K+ card registrations and hundreds of
-                orders within 48 hours of launch.
+                Led end-to-end architecture, implementation, and production
+                launch of the <strong>OTC Benefits (Directed Spend Benefits
+                Card) payment method</strong>, enabling healthcare benefit card
+                payments across Amazon Retail, Fresh, and FBA — coordinating
+                delivery across 10+ cross-functional teams.
               </li>
               <li>
-                Designed a plugin-based card integration framework now adopted
-                across Amazon Payments; maintained 99.9%+ uptime with zero
+                Designed the backend card registration and payment processing
+                workflows, and established a standardized
+                <strong>plugin-based integration framework</strong> that has
+                since been adopted across Amazon Payments.
+              </li>
+              <li>
+                Delivered the full stack: backend services, payment validation,
+                routing logic, customer-facing registration UI, and monitoring
+                infrastructure — maintaining 99.9%+ uptime with zero
                 customer-impacting issues during launch.
               </li>
               <li>
-                Cut wallet service request volume by 50% (−8,000+ TPS monthly),
-                saving ~$3K/month in infrastructure cost.
+                Launched on January 1, 2026 with 1K+ benefit card registrations
+                and hundreds of successful orders within the first 48 hours.
+              </li>
+              <li>
+                Optimized wallet service APIs by consolidating redundant calls
+                — 50% less request volume, 8,000+ TPS monthly load eliminated,
+                and ~$3K/month saved in infrastructure cost.
+              </li>
+              <li>
+                Mentored junior engineers through design discussions, code
+                reviews, and onboarding support.
               </li>
             </ul>
           </li>
@@ -160,17 +176,27 @@ education: BSc CS, UBC</code></pre>
             </div>
             <ul>
               <li>
-                Built payment authentication services (CVV verification, 3D
-                Secure) balancing low-friction checkout with fraud protection.
+                Built services for the Global Payment Authentication Team that
+                improve customer trust through a rich set of payment challenge
+                methods — CVV verification at card registration, 3D Secure
+                challenges — limiting friction while protecting against
+                fraudulent payments.
               </li>
               <li>
-                Created and owned a new Payment Authentication Service — 39–55%
-                latency reduction at launch across Asia-Pacific regions.
+                Created and owned a new <strong>Payment Authentication
+                Service</strong> with improved infrastructure and optimized
+                business logic; its Asia-Pacific launch cut latency by 39–55%,
+                shaving 7–12&nbsp;ms off checkout wait time.
               </li>
               <li>
-                Shipped a serverless, event-driven AWS Lambda service helping
-                Customer Service unblock genuine customers; completed Graviton2
-                and JDK 11 migrations for a tier-1 service.
+                Created and owned a serverless, event-driven AWS Lambda service
+                enabling Customer Service teams to unblock genuine customers
+                after consecutive incorrect CVV entries.
+              </li>
+              <li>
+                Owned and completed the Graviton2 migration and JDK 11 upgrade
+                for a tier-1 service — up to 40% better price-performance over
+                x86 instances.
               </li>
             </ul>
           </li>
@@ -182,8 +208,14 @@ education: BSc CS, UBC</code></pre>
             </div>
             <ul>
               <li>
-                Built React features for SAP Analytics Cloud (Search to Insight
-                autocomplete/typeahead) and improved app load performance by 25%.
+                Built frontend features for SAP Analytics Cloud using React,
+                including autocomplete and typeahead for the Search to Insight
+                interface.
+              </li>
+              <li>
+                Improved application load performance by 25% by decoupling
+                team-owned modules from the main application bundle; contributed
+                to predictive features (Smart Discovery, Smart Insights).
               </li>
             </ul>
           </li>
@@ -236,50 +268,17 @@ education: BSc CS, UBC</code></pre>
         </div>
       </section>
 
-      <!-- Projects -->
-      <section class="section container" id="projects">
-        <h2><span class="section-index">04.</span> Personal projects</h2>
-        <p class="section-note">
-          Some earlier projects from my student days — kept here for nostalgia.
-        </p>
-
-        <div class="project-grid">
-          <a class="project-card" href="https://github.com/YancongLi/MemoryGame" target="_blank" rel="noopener">
-            <h3>Memory Game</h3>
-            <p>
-              A Front-End Web Developer Nanodegree project, reviewed and
-              approved by Udacity.
-            </p>
-            <span class="project-link">github.com/YancongLi/MemoryGame →</span>
-          </a>
-
-          <a class="project-card" href="https://github.com/YancongLi/Webmaps-built-by-Python-and-Folium" target="_blank" rel="noopener">
-            <h3>Web Map</h3>
-            <p>
-              An interactive map plotting US volcanoes with Python and Folium.
-            </p>
-            <span class="project-link">github.com/YancongLi/Webmaps →</span>
-          </a>
-
-          <a class="project-card" href="https://github.com/YancongLi/PersonalPortfolioWebsiteByDjango" target="_blank" rel="noopener">
-            <h3>Django Personal Website</h3>
-            <p>
-              Explored the MVC pattern in Django by building a simple personal
-              website.
-            </p>
-            <span class="project-link">github.com/YancongLi/PersonalPortfolio →</span>
-          </a>
-        </div>
-      </section>
-
       <!-- Contact -->
       <section class="section container contact" id="contact">
-        <h2><span class="section-index">05.</span> Get in touch</h2>
+        <h2><span class="section-index">04.</span> Get in touch</h2>
         <p>
           Whether you want to talk payments, distributed systems, or Vancouver
-          coffee spots — my inbox is open.
+          coffee spots — the best way to reach me is on LinkedIn.
         </p>
-        <a class="btn btn-primary btn-lg" href="mailto:yancongli1996@gmail.com">Say hello 👋</a>
+        <div class="contact-actions">
+          <a class="btn btn-primary btn-lg" href="https://www.linkedin.com/in/ubcpeterli/" target="_blank" rel="noopener">Connect on LinkedIn 👋</a>
+          <a class="btn btn-lg" href="https://github.com/YancongLi" target="_blank" rel="noopener">Follow on GitHub</a>
+        </div>
       </section>
     </main>
 
