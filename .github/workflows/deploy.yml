@@ -12,6 +12,8 @@ concurrency:
 env:
   BUCKET: peterli-personal
   AWS_REGION: us-west-1
+  # secrets aren't allowed in step `if` expressions, so surface presence here
+  HAS_AWS_CREDENTIALS: ${{ secrets.AWS_ACCESS_KEY_ID != '' }}
 
 jobs:
   deploy:
@@ -20,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check AWS credentials are configured
-        if: ${{ secrets.AWS_ACCESS_KEY_ID == '' }}
+        if: ${{ env.HAS_AWS_CREDENTIALS != 'true' }}
         run: |
           echo "::error::AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY secrets are not set. Add them under Settings -> Secrets and variables -> Actions (see README)."
           exit 1
