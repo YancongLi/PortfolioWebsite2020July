@@ -17,11 +17,21 @@ function currentTheme() {
 
 const toggle = document.getElementById("theme-toggle");
 
+function syncToggleState() {
+  toggle.setAttribute("aria-pressed", currentTheme() === "dark");
+}
+
+syncToggleState();
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", syncToggleState);
+
 toggle.addEventListener("click", () => {
   const next = currentTheme() === "dark" ? "light" : "dark";
   const apply = () => {
     root.dataset.theme = next;
     localStorage.setItem("theme", next);
+    syncToggleState();
   };
 
   if (reducedMotion.matches || !document.startViewTransition) {
