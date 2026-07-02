@@ -436,6 +436,21 @@ a {
   font-weight: 600;
 }
 
+.timeline a strong {
+  color: var(--accent);
+}
+
+.timeline a::after {
+  content: " ↗";
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+.timeline a:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Skills */
 
 .skills-grid {
