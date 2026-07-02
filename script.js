@@ -1,37 +1,136 @@
-let theme = localStorage.getItem("theme");
+const root = document.documentElement;
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-if (theme == null) {
-  setTheme("blue");
-} else {
-  setTheme(theme);
+// --- Theme: follow the OS by default; a manual toggle wins and is remembered.
+
+const stored = localStorage.getItem("theme");
+if (stored === "light" || stored === "dark") {
+  root.dataset.theme = stored;
 }
 
-let themeDots = document.getElementsByClassName("theme-dot");
+function currentTheme() {
+  if (root.dataset.theme) return root.dataset.theme;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
 
-for (let i = 0; themeDots.length > i; i++) {
-  themeDots[i].addEventListener("click", function () {
-    let mode = this.dataset.mode;
-    console.log("Option clicked:", mode);
-    setTheme(mode);
+const toggle = document.getElementById("theme-toggle");
+
+function syncToggleState() {
+  toggle.setAttribute("aria-pressed", currentTheme() === "dark");
+}
+
+syncToggleState();
+
+const schemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+if (typeof schemeQuery.addEventListener === "function") {
+  schemeQuery.addEventListener("change", syncToggleState);
+} else if (typeof schemeQuery.addListener === "function") {
+  schemeQuery.addListener(syncToggleState);
+}
+
+toggle.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  const apply = () => {
+    root.dataset.theme = next;
+    localStorage.setItem("theme", next);
+    syncToggleState();
+  };
+
+  if (reducedMotion.matches || !document.startViewTransition) {
+    apply();
+    return;
+  }
+
+  // Sweep the new theme out from the toggle button in a growing circle
+  const { left, top, width, height } = toggle.getBoundingClientRect();
+  const x = left + width / 2;
+  const y = top + height / 2;
+  const radius = Math.hypot(
+    Math.max(x, innerWidth - x),
+    Math.max(y, innerHeight - y)
+  );
+
+  document.startViewTransition(apply).ready.then(() => {
+    root.animate(
+      {
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${radius}px at ${x}px ${y}px)`,
+        ],
+      },
+      {
+        duration: 450,
+        easing: "ease-in-out",
+        pseudoElement: "::view-transition-new(root)",
+      }
+    );
+  });
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// --- Scroll reveal: fade sections in as they enter the viewport.
+// The .reveal class is only added here, so without JS everything stays visible.
+
+const revealTargets = document.querySelectorAll(
+  ".section h2, .about-grid p, .timeline > li, .skill-group, .contact p, .contact-actions"
+);
+
+if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+  // leave elements untouched
+} else {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -40px" }
+  );
+
+  revealTargets.forEach((el) => {
+    el.classList.add("reveal");
+    observer.observe(el);
   });
 }
 
-function setTheme(mode) {
-  if (mode == "light") {
-    document.getElementById("theme-style").href = "default.css";
-  }
+// --- Terminal typewriter: type out the hero card text, keeping the
+// colored prompt spans intact by typing each text node in order.
 
-  if (mode == "blue") {
-    document.getElementById("theme-style").href = "blue.css";
-  }
+const terminalCode = document.querySelector(".terminal-body code");
 
-  if (mode == "green") {
-    document.getElementById("theme-style").href = "green.css";
-  }
+if (terminalCode && !reducedMotion.matches) {
+  const textNodes = [];
+  (function collect(node) {
+    for (const child of node.childNodes) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        textNodes.push([child, child.textContent]);
+      } else {
+        collect(child);
+      }
+    }
+  })(terminalCode);
 
-  if (mode == "purple") {
-    document.getElementById("theme-style").href = "purple.css";
-  }
+  textNodes.forEach(([node]) => (node.textContent = ""));
 
-  localStorage.setItem("theme", mode);
+  const cursor = document.createElement("span");
+  cursor.className = "t-cursor";
+  terminalCode.appendChild(cursor);
+
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  (async () => {
+    await sleep(700);
+    for (const [node, text] of textNodes) {
+      node.after(cursor);
+      for (const char of text) {
+        node.textContent += char;
+        await sleep(char === "\n" ? 130 : 16);
+      }
+    }
+  })();
 }
